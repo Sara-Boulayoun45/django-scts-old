@@ -1,0 +1,31 @@
+<!-- Zeigt den Text der Frage groß an -->
+<h1>{{ question.question_text }}</h1>
+
+<!-- Startet eine Liste für die Antworten -->
+<ul>
+<!-- 'choice_set.all' holt automatisch alle Antworten, die in der Datenbank mit dieser Frage verknüpft sind -->
+{% for choice in question.choice_set.all %}
+    <!-- Zeigt den Text der jeweiligen Antwortmöglichkeit an -->
+    <li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul>
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %} <!-- Sicherheits-Schlüssel: Schützt dein Formular vor Hackern -->
+    <fieldset>
+        <legend><h1>{{ question.question_text }}</h1></legend>
+        
+        <!-- Falls der User nichts auswählt, zeigen wir hier eine Fehlermeldung -->
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+        <!-- Wir gehen alle Antwortmöglichkeiten (Choices) durch -->
+        {% for choice in question.choice_set.all %}
+            <!-- 'value' ist die ID der Antwort -->
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+            <!-- Das Label macht den Text neben dem Button anklickbar -->
+            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        {% endfor %}
+    </fieldset>
+    <!-- Der Absendeknopf -->
+    <input type="submit" value="Vote">
+</form>

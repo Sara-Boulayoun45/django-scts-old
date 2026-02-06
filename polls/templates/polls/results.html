@@ -1,0 +1,17 @@
+<!-- Zeigt die Frage als Überschrift -->
+<h1>{{ question.question_text }}</h1>
+
+<ul>
+<!-- Geht alle Antworten durch und zeigt den aktuellen Punktestand -->
+{% for choice in question.choice_set.all %}
+    <li>
+        {{ choice.choice_text }} -- 
+        <strong>{{ choice.votes }}</strong> 
+        <!-- 'pluralize' schreibt automatisch "vote" bei 1 -->
+        vote{{ choice.votes|pluralize }}
+    </li>
+{% endfor %}
+</ul>
+
+<!-- Ein Link, um zur Frage zurückzukehren und nochmal zu wählen -->
+<a href="{% url 'polls:detail' question.id %}">Nochmal abstimmen?</a>
